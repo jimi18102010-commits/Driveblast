@@ -20,6 +20,17 @@ from driveblast.ui import (
 DEFAULT_CHUNK_SIZE = 1024 * 1024  # 1 MB chunk
 
 
+def detect_resource_type(url_or_id: str) -> str:
+    """Detects whether URL refers to a regular file, Google Doc, Spreadsheet, or Presentation."""
+    if "docs.google.com/document" in url_or_id:
+        return "document"
+    if "docs.google.com/spreadsheets" in url_or_id:
+        return "spreadsheet"
+    if "docs.google.com/presentation" in url_or_id:
+        return "presentation"
+    return "file"
+
+
 def download(
     url_or_id: str,
     output: Optional[str] = None,
@@ -41,6 +52,7 @@ def download(
         Absolute path to the downloaded file.
     """
     file_id = extract_file_id(url_or_id)
+    doc_type = detect_resource_type(url_or_id)
     session = requests.Session()
 
     # Determine potential output file location
@@ -63,16 +75,12 @@ def download(
     if range_offset > 0 and not quiet:
         print_info(f"Found partial file ({existing_size / (1024 * 1024):.2f} MB). Requesting resume...")
 
-    try:
-        resp, filename_from_header, total_size = resolve_gdrive_download_stream(
-            file_id=file_id,
-            session=session,
-            range_offset=range_offset,
-        )
-    except Exception as e:
-        if not quiet:
-            print_error(str(e))
-        raise
+    resp, filename_from_header, total_size = resolve_gdrive_download_stream(
+        file_id=file_id,
+        session=session,
+        range_offset=range_offset,
+        doc_type=doc_type,
+    )
 
     # Finalize target file path
     if not target_path:

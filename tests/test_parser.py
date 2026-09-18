@@ -31,6 +31,21 @@ def test_extract_file_id_raw_id():
     assert extract_file_id(raw_id) == raw_id
 
 
+def test_extract_file_id_google_docs():
+    url = "https://docs.google.com/document/d/1xLEO-8AgNMPeNFb8vQWCqXd6siXfTRMXVukd3iSH3x4/edit?usp=drive_link"
+    assert extract_file_id(url) == "1xLEO-8AgNMPeNFb8vQWCqXd6siXfTRMXVukd3iSH3x4"
+
+
+def test_extract_file_id_google_sheets():
+    url = "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/edit#gid=0"
+    assert extract_file_id(url) == "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs"
+
+
+def test_extract_file_id_google_presentation():
+    url = "https://docs.google.com/presentation/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/edit#slide=id.p"
+    assert extract_file_id(url) == "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs"
+
+
 def test_extract_file_id_invalid():
     with pytest.raises(ValueError):
         extract_file_id("https://google.com/search?q=hello")

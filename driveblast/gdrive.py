@@ -18,10 +18,13 @@ DEFAULT_USER_AGENT = (
 
 def extract_file_id(url_or_id: str) -> str:
     """
-    Extracts Google Drive file ID from various URL formats or returns raw ID.
+    Extracts Google Drive or Google Docs file ID from various URL formats or returns raw ID.
     
     Supported formats:
     - https://drive.google.com/file/d/{ID}/view?usp=sharing
+    - https://docs.google.com/document/d/{ID}/edit...
+    - https://docs.google.com/spreadsheets/d/{ID}/edit...
+    - https://docs.google.com/presentation/d/{ID}/edit...
     - https://drive.google.com/open?id={ID}
     - https://drive.google.com/uc?id={ID}
     - https://drive.google.com/uc?export=download&id={ID}
@@ -30,8 +33,8 @@ def extract_file_id(url_or_id: str) -> str:
     """
     url_or_id = url_or_id.strip()
 
-    # Pattern: /file/d/{ID}
-    match = re.search(r"/file/d/([a-zA-Z0-9_-]+)", url_or_id)
+    # Pattern: /file/d/{ID}, /document/d/{ID}, /spreadsheets/d/{ID}, /presentation/d/{ID}
+    match = re.search(r"/(?:file|document|spreadsheets|presentation)/d/([a-zA-Z0-9_-]+)", url_or_id)
     if match:
         return match.group(1)
 
@@ -70,11 +73,13 @@ def parse_content_disposition_filename(disposition: Optional[str]) -> Optional[s
 def resolve_gdrive_download_stream(
     file_id: str,
     session: requests.Session,
-    range_offset: int = 0
+    range_offset: int = 0,
+    doc_type: str = "file",
 ) -> Tuple[requests.Response, Optional[str], Optional[int]]:
     """
-    Resolves a direct Google Drive download stream, handling:
+    Resolves a direct Google Drive or Google Docs download stream, handling:
     - Normal direct downloads
+    - Google Docs / Sheets / Slides exports
     - Virus scan warning confirmation screens for large files
     - HTTP Range header for resuming partial downloads
     
@@ -85,9 +90,29 @@ def resolve_gdrive_download_stream(
     if range_offset > 0:
         headers["Range"] = f"bytes={range_offset}-"
 
-    # Step 1: Initial request to usercontent endpoint
-    base_url = f"https://drive.usercontent.google.com/download?id={file_id}&export=download"
+    # Step 1: Initial request based on resource type
+    if doc_type == "document":
+        base_url = f"https://docs.google.com/document/d/{file_id}/export?format=docx"
+    elif doc_type == "spreadsheet":
+        base_url = f"https://docs.google.com/spreadsheets/d/{file_id}/export?format=xlsx"
+    elif doc_type == "presentation":
+        base_url = f"https://docs.google.com/presentation/d/{file_id}/export/pptx"
+    else:
+        base_url = f"https://drive.usercontent.google.com/download?id={file_id}&export=download"
+
     resp = session.get(base_url, headers=headers, stream=True, allow_redirects=True)
+
+    # Check for authentication / permission denial
+    resp_url = getattr(resp, "url", "") or ""
+    if resp.status_code in (401, 403) or "accounts.google.com" in resp_url:
+        raise GoogleDriveError(
+            "Access Denied (401/403): The document or file is private.\n"
+            "To download, please open Google Drive/Docs -> 'Share' (Поделиться) -> "
+            "set to 'Anyone with the link can view' (Доступ: Все, у кого есть ссылка)."
+        )
+
+    if resp.status_code == 404:
+        raise GoogleDriveError("File or document not found (404). Please verify the link or File ID.")
 
     # Check if we got the file immediately
     content_disp = resp.headers.get("content-disposition", "")
@@ -95,6 +120,9 @@ def resolve_gdrive_download_stream(
 
     if "attachment" in content_disp or "text/html" not in content_type:
         filename = parse_content_disposition_filename(content_disp)
+        if not filename and doc_type != "file":
+            ext_map = {"document": ".docx", "spreadsheet": ".xlsx", "presentation": ".pptx"}
+            filename = f"google_{doc_type}_{file_id[:8]}{ext_map.get(doc_type, '')}"
         total_size = None
         if "content-length" in resp.headers:
             content_len = int(resp.headers["content-length"])
@@ -108,7 +136,7 @@ def resolve_gdrive_download_stream(
     # Check for known permission error banners
     if "Google Drive - Access Denied" in html_content or "Permission denied" in html_content:
         raise GoogleDriveError(
-            "Access Denied: The file is private or requires authorization. "
+            "Access Denied: The file is private or requires authorization.\n"
             "Please ensure link sharing is set to 'Anyone with the link can view'."
         )
 
