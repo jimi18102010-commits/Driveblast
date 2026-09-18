@@ -2,14 +2,28 @@
 
 <div align="center">
 
+[![GitHub](https://img.shields.io/badge/GitHub-jimi18102010--commits-181717?logo=github)](https://github.com/jimi18102010-commits/driveblast)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-15%2F15%20Passing-brightgreen.svg)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)]()
 
-**High-speed Google Drive downloader with automatic virus-warning bypass, download resume, and modern CLI interface.**
+**High-speed Google Drive downloader with automatic virus-warning bypass, download resume, Google Docs/Sheets export, and interactive CLI.**
+
+[📖 Русская версия руководства (Russian Guide)](docs/GUIDE_RU.md)
 
 </div>
+
+---
+
+```text
+╭────────────────────────────────────────────────────────╮
+│ ⚡ DriveBlast v0.1.0                                   │
+│ High-speed Google Drive Downloader with Resume Support │
+╰────────────────────────────────────────────────────────╯
+ℹ Downloading: large_model_weights.bin (1.45 GB)
+  large_model_weights.bin ━━━━━━╸━━━━━━━━━━━━ 42.5% 616.2 MB / 1.45 GB 24.8 MB/s 0:00:34
+```
 
 ---
 
@@ -23,19 +37,27 @@ For years, developers and data scientists have relied on `gdown` to download lar
 | :--- | :---: | :---: |
 | **Download Resume (`Range` header)** | ❌ (starts from 0) | ✅ **Yes (resumes from exact byte)** |
 | **Bypass "Can't scan for viruses" warning** | ⚠️ Often breaks on changes | ✅ **Multi-fallback form & token parsing** |
+| **Google Docs / Sheets Export** | ⚠️ Limited / Crashes | ✅ **Built-in export to PDF, DOCX, XLSX** |
+| **Interactive Terminal Mode** | ❌ (requires flags) | ✅ **Run `driveblast` and paste link** |
 | **Modern Terminal UI** | Basic / Stale | ✅ **Rich vibrant progress bar & speed ETA** |
 | **Graceful `Ctrl+C` pausing** | ❌ Corrupts / Aborts | ✅ **Pauses cleanly & informs how to resume** |
-| **Lightweight dependencies** | Heavy | ✅ **Minimal (`requests`, `rich`, `bs4`)** |
 | **Python 3.12 - 3.14 compatible** | Deprecation warnings | ✅ **100% Tested & Verified** |
 
 ---
 
 ## 📦 Installation
 
-### From Source / Clone
 ```bash
-git clone https://github.com/yourusername/driveblast.git
+git clone https://github.com/jimi18102010-commits/driveblast.git
 cd driveblast
+
+# Create & activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate       # Bash / Zsh
+# OR for Fish Shell (CachyOS / Arch):
+# source .venv/bin/activate.fish
+
+# Install editable package
 pip install -e .
 ```
 
@@ -43,23 +65,40 @@ pip install -e .
 
 ## 💻 CLI Usage
 
-Download any Google Drive file using its shareable URL or direct ID:
-
+### 1. Interactive Mode (Super easy!)
+Just run `driveblast` without arguments and paste your link:
 ```bash
-# Using a shareable link
-driveblast "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/view?usp=sharing"
-
-# Using file ID directly
-driveblast 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs
-
-# Specify custom output path
-driveblast 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs -o ./datasets/dataset.zip
-
-# Quiet mode (useful for cron jobs and scripts)
-driveblast 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs -q
+driveblast
 ```
 
-### Pausing & Resuming Downloads
+### 2. Standard Download
+```bash
+# Download by URL
+driveblast "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/view?usp=sharing"
+
+# Download by File ID
+driveblast 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs
+
+# Save to custom output filename or folder
+driveblast 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs -o ./datasets/dataset.zip
+```
+
+### 3. Google Docs / Sheets / Slides Export
+```bash
+# Export Google Document to PDF
+driveblast "https://docs.google.com/document/d/DOC_ID/edit" --format pdf
+
+# Export Google Document to Word DOCX
+driveblast "https://docs.google.com/document/d/DOC_ID/edit" --format docx
+
+# Export Google Spreadsheet to Excel XLSX
+driveblast "https://docs.google.com/spreadsheets/d/SHEET_ID/edit" --format xlsx
+```
+
+---
+
+## ⏸ Pausing & Resuming Downloads
+
 If your network drops or you press `Ctrl+C`:
 ```
 ⚠ Download paused at 450.20 MB. Run the command again to resume.
@@ -77,7 +116,7 @@ from driveblast import download
 
 # Download file
 filepath = download(
-    url_or_id="https://drive.google.com/file/d/YOUR_FILE_ID/view",
+    url_or_id="https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing",
     output="model_weights.bin",
     resume=True
 )
@@ -85,14 +124,17 @@ filepath = download(
 print(f"Downloaded to: {filepath}")
 ```
 
+See [examples/quick_download.py](examples/quick_download.py) for a complete example.
+
 ---
 
 ## ⚙️ CLI Options
 
 | Flag | Description | Default |
 | :--- | :--- | :---: |
-| `url_or_id` | Google Drive shareable URL or direct File ID | *Required* |
+| `url_or_id` | Google Drive URL or File ID *(Optional: interactive prompt if omitted)* | `None` |
 | `-o`, `--output` | Destination path or directory to save the file | `.` (original filename) |
+| `-f`, `--format` | Export format for Docs/Sheets (`pdf`, `docx`, `xlsx`, `pptx`, `txt`, `csv`) | `None` |
 | `--no-resume` | Disable resume, force re-downloading from scratch | `False` |
 | `-q`, `--quiet` | Suppress progress bar and output messages | `False` |
 | `--chunk-size` | Buffer chunk size in megabytes | `1` (1 MB) |
@@ -110,6 +152,10 @@ pytest
 ```
 
 ---
+
+## 👤 Author
+
+Developed by **[jimmiy](https://github.com/jimi18102010-commits)**.
 
 ## 📄 License
 

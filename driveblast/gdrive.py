@@ -75,11 +75,12 @@ def resolve_gdrive_download_stream(
     session: requests.Session,
     range_offset: int = 0,
     doc_type: str = "file",
+    export_format: Optional[str] = None,
 ) -> Tuple[requests.Response, Optional[str], Optional[int]]:
     """
     Resolves a direct Google Drive or Google Docs download stream, handling:
     - Normal direct downloads
-    - Google Docs / Sheets / Slides exports
+    - Google Docs / Sheets / Slides exports (docx, pdf, xlsx, pptx, etc.)
     - Virus scan warning confirmation screens for large files
     - HTTP Range header for resuming partial downloads
     
@@ -92,11 +93,14 @@ def resolve_gdrive_download_stream(
 
     # Step 1: Initial request based on resource type
     if doc_type == "document":
-        base_url = f"https://docs.google.com/document/d/{file_id}/export?format=docx"
+        fmt = export_format or "docx"
+        base_url = f"https://docs.google.com/document/d/{file_id}/export?format={fmt}"
     elif doc_type == "spreadsheet":
-        base_url = f"https://docs.google.com/spreadsheets/d/{file_id}/export?format=xlsx"
+        fmt = export_format or "xlsx"
+        base_url = f"https://docs.google.com/spreadsheets/d/{file_id}/export?format={fmt}"
     elif doc_type == "presentation":
-        base_url = f"https://docs.google.com/presentation/d/{file_id}/export/pptx"
+        fmt = export_format or "pptx"
+        base_url = f"https://docs.google.com/presentation/d/{file_id}/export/{fmt}"
     else:
         base_url = f"https://drive.usercontent.google.com/download?id={file_id}&export=download"
 
@@ -121,8 +125,8 @@ def resolve_gdrive_download_stream(
     if "attachment" in content_disp or "text/html" not in content_type:
         filename = parse_content_disposition_filename(content_disp)
         if not filename and doc_type != "file":
-            ext_map = {"document": ".docx", "spreadsheet": ".xlsx", "presentation": ".pptx"}
-            filename = f"google_{doc_type}_{file_id[:8]}{ext_map.get(doc_type, '')}"
+            fmt = export_format or ("docx" if doc_type == "document" else "xlsx" if doc_type == "spreadsheet" else "pptx")
+            filename = f"google_{doc_type}_{file_id[:8]}.{fmt}"
         total_size = None
         if "content-length" in resp.headers:
             content_len = int(resp.headers["content-length"])

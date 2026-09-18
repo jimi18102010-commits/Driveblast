@@ -37,6 +37,7 @@ def download(
     resume: bool = True,
     quiet: bool = False,
     chunk_size: int = DEFAULT_CHUNK_SIZE,
+    export_format: Optional[str] = None,
 ) -> str:
     """
     Downloads a file from Google Drive with automatic virus-warning bypass and resume support.
@@ -47,6 +48,7 @@ def download(
         resume: If True, attempts to resume downloading if file already exists.
         quiet: If True, suppresses progress bar and non-error console output.
         chunk_size: Stream buffer size in bytes (default: 1 MB).
+        export_format: Export format for Google Docs/Sheets/Slides (e.g. 'pdf', 'docx', 'xlsx').
 
     Returns:
         Absolute path to the downloaded file.
@@ -80,6 +82,7 @@ def download(
         session=session,
         range_offset=range_offset,
         doc_type=doc_type,
+        export_format=export_format,
     )
 
     # Finalize target file path

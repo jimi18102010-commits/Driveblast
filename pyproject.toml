@@ -10,8 +10,9 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [
-    { name = "DriveBlast Contributor" }
+    { name = "jimmiy", email = "jimi18102010@gmail.com" }
 ]
+urls = { "Homepage" = "https://github.com/jimi18102010-commits/driveblast", "Bug Tracker" = "https://github.com/jimi18102010-commits/driveblast/issues" }
 keywords = ["google-drive", "downloader", "gdown", "resume-download", "cli"]
 classifiers = [
     "Programming Language :: Python :: 3",
