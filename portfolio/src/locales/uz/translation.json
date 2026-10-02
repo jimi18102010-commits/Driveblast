@@ -1,0 +1,66 @@
+{
+  "nav": {
+    "about": "Men haqimda",
+    "skills": "Stack",
+    "projects": "Loyihalar",
+    "terminal": "Terminal",
+    "simulator": "eBPF Simulyatori",
+    "contact": "Aloqa"
+  },
+  "hero": {
+    "title": "Tizim muhandisi",
+    "subtitle": "Quyi darajadagi tizimlar va yuqori tezlikdagi optimizatsiya",
+    "localTime": "Mahalliy vaqt",
+    "systemStatus": "Tizim: OK"
+  },
+  "about": {
+    "title": "Men haqimda",
+    "name": "Ism: Jimmiy",
+    "age": "Yosh: 15 yosh",
+    "location": "Shahar: Toshkent, O'zbekiston (UTC+05:00)",
+    "specialization": "Ixtisoslashuv: Quyi darajadagi tizimlar, Linux yadrosi, tarmoq protokollari, eBPF/XDP, yuqori tezlikdagi optimizatsiya."
+  },
+  "skills": {
+    "title": "Texnologiya steki"
+  },
+  "projects": {
+    "title": "Loyihalar",
+    "scapy": {
+      "title": "Scapy (Upstream PR #5214)",
+      "desc": "Asosiy secdev/scapy omboriga rasmiy qabul qilingan PR (EDNS0 protokol parserini va TLS SNI dissektorini tuzatish)."
+    },
+    "driveblast": {
+      "title": "DriveBlast",
+      "desc": "Google Drive uchun chunked HTTP 206 ni qo'llab-quvvatlaydigan Python va Rust-da yuqori tezlikdagi oqim dvigateli (rclone va gdown-ga qaraganda 3,8 baravar tezroq ishlaydi)."
+    },
+    "faceblast": {
+      "title": "FaceBlast",
+      "desc": "C++ / ONNX Runtime real vaqtda yuzni aniqlash quvuri (har bir kadr uchun inferens 15 ms dan kam, dlib/PyTorch uchun 450 ms ga qarshi)."
+    },
+    "vortex": {
+      "title": "VORTEX",
+      "desc": "eBPF/XDP orqali Linux yadrosi darajasidagi tarmoq paketlari filtri darhol trafikni tushirish bilan (Drop kechikishi < 0.8 µs)."
+    },
+    "viewDetails": "Tafsilotlar",
+    "metrics": "Metrikalar",
+    "sourceCode": "Manba kodi",
+    "architecture": "Arxitektura"
+  },
+  "simulator": {
+    "title": "eBPF/XDP Simulyatori",
+    "desc": "NIC orqali paketlar harakatini vizualizatsiya qilish, yadro kancasi va <0.8 µs da darhol XDP_DROP",
+    "incoming": "Kiruvchi paket",
+    "xdpHook": "XDP kancasi",
+    "kernel": "Linux yadrosi",
+    "dropped": "Tushib ketdi (DROP)",
+    "passed": "O'tdi (PASS)",
+    "latency": "Kechikish: < 0.8 µs"
+  },
+  "terminal": {
+    "title": "Terminal",
+    "welcome": "Terminal emulyatoriga xush kelibsiz. Buyruqlar ro'yxati uchun 'help' yozing."
+  },
+  "contact": {
+    "title": "Aloqa"
+  }
+}
