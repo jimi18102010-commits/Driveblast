@@ -1,6 +1,7 @@
 import os
 import sys
 from typing import Optional
+from contextlib import nullcontext
 import requests
 
 from driveblast.gdrive import (
@@ -77,13 +78,15 @@ def download(
     if range_offset > 0 and not quiet:
         print_info(f"Found partial file ({existing_size / (1024 * 1024):.2f} MB). Requesting resume...")
 
-    resp, filename_from_header, total_size = resolve_gdrive_download_stream(
-        file_id=file_id,
-        session=session,
-        range_offset=range_offset,
-        doc_type=doc_type,
-        export_format=export_format,
-    )
+    status_ctx = nullcontext() if quiet else console.status("[bold cyan]Resolving download link...[/bold cyan]", spinner="dots")
+    with status_ctx:
+        resp, filename_from_header, total_size = resolve_gdrive_download_stream(
+            file_id=file_id,
+            session=session,
+            range_offset=range_offset,
+            doc_type=doc_type,
+            export_format=export_format,
+        )
 
     # Finalize target file path
     if not target_path:
