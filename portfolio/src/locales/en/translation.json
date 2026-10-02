@@ -1,0 +1,66 @@
+{
+  "nav": {
+    "about": "About",
+    "skills": "Stack",
+    "projects": "Projects",
+    "terminal": "Terminal",
+    "simulator": "eBPF Simulator",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Systems Engineer",
+    "subtitle": "Low-level Systems & High-speed Optimization",
+    "localTime": "Local Time",
+    "systemStatus": "System: OK"
+  },
+  "about": {
+    "title": "About Me",
+    "name": "Name: Jimmiy",
+    "age": "Age: 15 years old",
+    "location": "Location: Tashkent, Uzbekistan (UTC+05:00)",
+    "specialization": "Specialization: Low-level systems, Linux kernel, network protocols, eBPF/XDP, high-speed optimization."
+  },
+  "skills": {
+    "title": "Technology Stack"
+  },
+  "projects": {
+    "title": "Projects",
+    "scapy": {
+      "title": "Scapy (Upstream PR #5214)",
+      "desc": "Official accepted PR into the main secdev/scapy repository (fixing EDNS0 protocol parser and TLS SNI dissector)."
+    },
+    "driveblast": {
+      "title": "DriveBlast",
+      "desc": "High-speed streaming engine in Python and Rust with chunked HTTP 206 support for Google Drive (3.8x faster than rclone and gdown)."
+    },
+    "faceblast": {
+      "title": "FaceBlast",
+      "desc": "C++ / ONNX Runtime real-time face recognition pipeline (inference < 15ms per frame, vs 450ms for dlib/PyTorch)."
+    },
+    "vortex": {
+      "title": "VORTEX",
+      "desc": "Network packet filter at the Linux kernel level via eBPF/XDP with instant traffic drop (Drop latency < 0.8 µs)."
+    },
+    "viewDetails": "View Details",
+    "metrics": "Metrics",
+    "sourceCode": "Source Code",
+    "architecture": "Architecture"
+  },
+  "simulator": {
+    "title": "eBPF/XDP Simulator",
+    "desc": "Visualization of packet movement through the NIC, kernel hook, and instant XDP_DROP in <0.8 µs",
+    "incoming": "Incoming Packet",
+    "xdpHook": "XDP Hook",
+    "kernel": "Linux Kernel",
+    "dropped": "Dropped (DROP)",
+    "passed": "Passed (PASS)",
+    "latency": "Latency: < 0.8 µs"
+  },
+  "terminal": {
+    "title": "Terminal",
+    "welcome": "Welcome to terminal emulator. Type 'help' for a list of commands."
+  },
+  "contact": {
+    "title": "Contact"
+  }
+}

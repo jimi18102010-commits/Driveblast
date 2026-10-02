@@ -1,0 +1,66 @@
+{
+  "nav": {
+    "about": "关于我",
+    "skills": "技术栈",
+    "projects": "项目",
+    "terminal": "终端",
+    "simulator": "eBPF 模拟器",
+    "contact": "联系方式"
+  },
+  "hero": {
+    "title": "系统工程师",
+    "subtitle": "底层系统与高速优化",
+    "localTime": "当地时间",
+    "systemStatus": "系统状态: 正常"
+  },
+  "about": {
+    "title": "关于我",
+    "name": "姓名: Jimmiy",
+    "age": "年龄: 15岁",
+    "location": "地点: 塔什干, 乌兹别克斯坦 (UTC+05:00)",
+    "specialization": "专业: 底层系统, Linux内核, 网络协议, eBPF/XDP, 高速优化."
+  },
+  "skills": {
+    "title": "技术栈"
+  },
+  "projects": {
+    "title": "项目",
+    "scapy": {
+      "title": "Scapy (Upstream PR #5214)",
+      "desc": "正式合并到主分支 secdev/scapy 的 PR (修复 EDNS0 协议解析器和 TLS SNI 剖析器)."
+    },
+    "driveblast": {
+      "title": "DriveBlast",
+      "desc": "使用 Python 和 Rust 编写的高速流媒体引擎，支持 Google Drive 的分块 HTTP 206 (比 rclone 和 gdown 快 3.8 倍)."
+    },
+    "faceblast": {
+      "title": "FaceBlast",
+      "desc": "C++ / ONNX Runtime 实时人脸识别管道 (每帧推理小于 15 毫秒，而 dlib/PyTorch 需要 450 毫秒)."
+    },
+    "vortex": {
+      "title": "VORTEX",
+      "desc": "通过 eBPF/XDP 在 Linux 内核层面实现的网络数据包过滤器，具有即时流量丢弃功能 (丢弃延迟 < 0.8 µs)."
+    },
+    "viewDetails": "查看详情",
+    "metrics": "指标",
+    "sourceCode": "源代码",
+    "architecture": "架构"
+  },
+  "simulator": {
+    "title": "eBPF/XDP 模拟器",
+    "desc": "可视化数据包通过 NIC，内核钩子和小于 0.8 微秒的即时 XDP_DROP 的运动",
+    "incoming": "传入数据包",
+    "xdpHook": "XDP 钩子",
+    "kernel": "Linux 内核",
+    "dropped": "已丢弃 (DROP)",
+    "passed": "已通过 (PASS)",
+    "latency": "延迟: < 0.8 µs"
+  },
+  "terminal": {
+    "title": "终端",
+    "welcome": "欢迎使用终端模拟器。输入 'help' 获取命令列表。"
+  },
+  "contact": {
+    "title": "联系方式"
+  }
+}

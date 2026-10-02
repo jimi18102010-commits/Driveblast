@@ -1,0 +1,66 @@
+{
+  "nav": {
+    "about": "Обо мне",
+    "skills": "Стек",
+    "projects": "Проекты",
+    "terminal": "Терминал",
+    "simulator": "eBPF Симулятор",
+    "contact": "Контакты"
+  },
+  "hero": {
+    "title": "Системный инженер",
+    "subtitle": "Низкоуровневые системы & Высокоскоростная оптимизация",
+    "localTime": "Местное время",
+    "systemStatus": "Система: OK"
+  },
+  "about": {
+    "title": "Обо мне",
+    "name": "Имя: Jimmiy (Джимми)",
+    "age": "Возраст: 15 лет",
+    "location": "Город: Ташкент, Узбекистан (UTC+05:00)",
+    "specialization": "Специализация: Низкоуровневые системы, ядро Linux, сетевые протоколы, eBPF/XDP, высокоскоростная оптимизация."
+  },
+  "skills": {
+    "title": "Технологический стек"
+  },
+  "projects": {
+    "title": "Проекты",
+    "scapy": {
+      "title": "Scapy (Upstream PR #5214)",
+      "desc": "Официальный принятый PR в главный репозиторий secdev/scapy (исправление парсера протокола EDNS0 и диссектора TLS SNI)."
+    },
+    "driveblast": {
+      "title": "DriveBlast",
+      "desc": "Высокоскоростной стриминговый движок на Python и Rust с поддержкой chunked HTTP 206 для Google Drive (работает в 3.8 раза быстрее rclone и gdown)."
+    },
+    "faceblast": {
+      "title": "FaceBlast",
+      "desc": "C++ / ONNX Runtime пайплайн распознавания лиц для реального времени (инференс менее 15 мс на кадр, против 450 мс у dlib/PyTorch)."
+    },
+    "vortex": {
+      "title": "VORTEX",
+      "desc": "Сетевой фильтр пакетов на уровне ядра Linux через eBPF/XDP с мгновенным сбросом трафика (Drop latency < 0.8 µs)."
+    },
+    "viewDetails": "Подробности",
+    "metrics": "Метрики",
+    "sourceCode": "Исходный код",
+    "architecture": "Архитектура"
+  },
+  "simulator": {
+    "title": "eBPF/XDP Симулятор",
+    "desc": "Визуализация движения пакетов через сетевую карту, хук ядра и мгновенный XDP_DROP за <0.8 µs",
+    "incoming": "Входящий пакет",
+    "xdpHook": "XDP Хук",
+    "kernel": "Ядро Linux",
+    "dropped": "Сброшено (DROP)",
+    "passed": "Пропущено (PASS)",
+    "latency": "Задержка: < 0.8 µs"
+  },
+  "terminal": {
+    "title": "Терминал",
+    "welcome": "Добро пожаловать в эмулятор терминала. Введите 'help' для списка команд."
+  },
+  "contact": {
+    "title": "Контакты"
+  }
+}

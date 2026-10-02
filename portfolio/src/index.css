@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0a0a0c] text-[#e0e0e0] font-sans antialiased overflow-x-hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .hairline-border {
+    @apply border border-[#222];
+  }
+
+  .glass-panel {
+    @apply bg-[#111113]/80 backdrop-blur-md border border-[#222];
+  }
+}

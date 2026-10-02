@@ -1,0 +1,66 @@
+{
+  "nav": {
+    "about": "Über mich",
+    "skills": "Stack",
+    "projects": "Projekte",
+    "terminal": "Terminal",
+    "simulator": "eBPF-Simulator",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "title": "Systemingenieur",
+    "subtitle": "Low-Level-Systeme & Hochgeschwindigkeitsoptimierung",
+    "localTime": "Ortszeit",
+    "systemStatus": "System: OK"
+  },
+  "about": {
+    "title": "Über mich",
+    "name": "Name: Jimmiy",
+    "age": "Alter: 15 Jahre",
+    "location": "Ort: Taschkent, Usbekistan (UTC+05:00)",
+    "specialization": "Spezialisierung: Low-Level-Systeme, Linux-Kernel, Netzwerkprotokolle, eBPF/XDP, Hochgeschwindigkeitsoptimierung."
+  },
+  "skills": {
+    "title": "Technologie-Stack"
+  },
+  "projects": {
+    "title": "Projekte",
+    "scapy": {
+      "title": "Scapy (Upstream PR #5214)",
+      "desc": "Offiziell akzeptierter PR in das Haupt-Repository secdev/scapy (Korrektur des EDNS0-Protokoll-Parsers und TLS-SNI-Dissectors)."
+    },
+    "driveblast": {
+      "title": "DriveBlast",
+      "desc": "Hochgeschwindigkeits-Streaming-Engine in Python und Rust mit Chunked-HTTP-206-Unterstützung für Google Drive (3,8-mal schneller als rclone und gdown)."
+    },
+    "faceblast": {
+      "title": "FaceBlast",
+      "desc": "C++ / ONNX Runtime Echtzeit-Gesichtserkennungs-Pipeline (Inferenz < 15 ms pro Frame, im Vergleich zu 450 ms bei dlib/PyTorch)."
+    },
+    "vortex": {
+      "title": "VORTEX",
+      "desc": "Netzwerkpaketfilter auf Linux-Kernel-Ebene über eBPF/XDP mit sofortigem Traffic-Drop (Drop-Latenz < 0.8 µs)."
+    },
+    "viewDetails": "Details",
+    "metrics": "Metriken",
+    "sourceCode": "Quellcode",
+    "architecture": "Architektur"
+  },
+  "simulator": {
+    "title": "eBPF/XDP-Simulator",
+    "desc": "Visualisierung der Paketbewegung durch die NIC, den Kernel-Hook und den sofortigen XDP_DROP in <0.8 µs",
+    "incoming": "Eingehendes Paket",
+    "xdpHook": "XDP Hook",
+    "kernel": "Linux Kernel",
+    "dropped": "Verworfen (DROP)",
+    "passed": "Bestanden (PASS)",
+    "latency": "Latenz: < 0.8 µs"
+  },
+  "terminal": {
+    "title": "Terminal",
+    "welcome": "Willkommen im Terminal-Emulator. Geben Sie 'help' ein für eine Liste der Befehle."
+  },
+  "contact": {
+    "title": "Kontakt"
+  }
+}
