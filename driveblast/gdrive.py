@@ -2,7 +2,7 @@ import re
 import urllib.parse
 from typing import Optional, Tuple
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 
 class GoogleDriveError(Exception):
@@ -135,7 +135,11 @@ def resolve_gdrive_download_stream(
 
     # Step 2: If we received HTML, it might be the virus scan warning confirmation page
     html_content = resp.text
-    soup = BeautifulSoup(html_content, "html.parser")
+    # Optimization: Use SoupStrainer to only parse the tags we actually care about
+    # This prevents BeautifulSoup from building an expensive DOM tree for the entire page,
+    # which can be large, significantly improving parsing speed and reducing memory usage.
+    strainer = SoupStrainer(["form", "a", "input"])
+    soup = BeautifulSoup(html_content, "html.parser", parse_only=strainer)
 
     # Check for known permission error banners
     if "Google Drive - Access Denied" in html_content or "Permission denied" in html_content:
