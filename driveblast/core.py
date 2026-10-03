@@ -148,8 +148,9 @@ def download(
     except KeyboardInterrupt:
         if not quiet:
             current_downloaded = os.path.getsize(target_path) if os.path.exists(target_path) else 0
+            print()
             print_warning(
-                f"\nDownload paused at {current_downloaded / (1024 * 1024):.2f} MB. "
+                f"Download paused at {current_downloaded / (1024 * 1024):.2f} MB. "
                 "Run the command again to resume."
             )
         sys.exit(130)
