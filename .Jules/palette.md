@@ -1,0 +1,3 @@
+## 2024-05-24 - Dynamic File Size Formatting in CLI Output
+**Learning:** Terminal CLI users prefer dynamic, human-readable file sizes (e.g., KB, MB, GB scaling based on size) over hardcoded units. Hardcoding to MB looks clunky for small config files or massive multi-GB models. The `rich` library contains excellent built-in utilities for this (e.g. `rich.filesize.decimal`) which ensures consistency without adding new dependencies.
+**Action:** When working on CLI tools handling downloads or file operations, always look for opportunities to replace hardcoded byte-math with dynamic formatting utilities from existing UI libraries like `rich` to provide a more polished read out.

@@ -11,6 +11,7 @@ from rich.progress import (
     TransferSpeedColumn,
 )
 from rich.theme import Theme
+from rich.filesize import decimal
 
 custom_theme = Theme({
     "info": "cyan",
@@ -48,6 +49,11 @@ def print_warning(message: str):
 
 def print_error(message: str):
     console.print(f"[error]✘ Error:[/error] {message}")
+
+
+def format_size(size_in_bytes: int) -> str:
+    """Formats file size into human readable string using rich.filesize."""
+    return decimal(size_in_bytes)
 
 
 def create_progress_bar(transient: bool = False) -> Progress:

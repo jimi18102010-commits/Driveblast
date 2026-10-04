@@ -11,6 +11,7 @@ from driveblast.gdrive import (
 from driveblast.ui import (
     console,
     create_progress_bar,
+    format_size,
     print_error,
     print_info,
     print_success,
@@ -75,7 +76,7 @@ def download(
     range_offset = existing_size if (resume and target_path and existing_size > 0) else 0
 
     if range_offset > 0 and not quiet:
-        print_info(f"Found partial file ({existing_size / (1024 * 1024):.2f} MB). Requesting resume...")
+        print_info(f"Found partial file ({format_size(existing_size)}). Requesting resume...")
 
     resp, filename_from_header, total_size = resolve_gdrive_download_stream(
         file_id=file_id,
@@ -94,7 +95,7 @@ def download(
             # If we didn't send Range earlier because filename wasn't known, check if it's already complete
             if total_size and existing_size == total_size:
                 if not quiet:
-                    print_success(f"File '{filename}' is already fully downloaded ({total_size / (1024 * 1024):.2f} MB).")
+                    print_success(f"File '{filename}' is already fully downloaded ({format_size(total_size)}).")
                 return os.path.abspath(target_path)
 
     filename = os.path.basename(target_path)
@@ -117,7 +118,7 @@ def download(
         raise GoogleDriveError(f"HTTP Error {resp.status_code}: Unable to download file.")
 
     if not quiet:
-        size_str = f"{total_size / (1024 * 1024):.2f} MB" if total_size else "Unknown size"
+        size_str = format_size(total_size) if total_size else "Unknown size"
         print_info(f"Downloading: [bold]{filename}[/bold] ({size_str})")
 
     # Download streaming loop
@@ -142,14 +143,14 @@ def download(
                             progress.update(task_id, advance=len(chunk))
 
         if not quiet:
-            final_size = os.path.getsize(target_path) / (1024 * 1024)
-            print_success(f"Successfully saved to [bold green]{os.path.abspath(target_path)}[/bold green] ({final_size:.2f} MB)")
+            final_size = os.path.getsize(target_path)
+            print_success(f"Successfully saved to [bold green]{os.path.abspath(target_path)}[/bold green] ({format_size(final_size)})")
 
     except KeyboardInterrupt:
         if not quiet:
             current_downloaded = os.path.getsize(target_path) if os.path.exists(target_path) else 0
             print_warning(
-                f"\nDownload paused at {current_downloaded / (1024 * 1024):.2f} MB. "
+                f"\nDownload paused at {format_size(current_downloaded)}. "
                 "Run the command again to resume."
             )
         sys.exit(130)
