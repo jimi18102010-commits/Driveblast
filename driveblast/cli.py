@@ -1,12 +1,6 @@
 import argparse
 import sys
 from driveblast import __version__
-from driveblast.core import download
-from driveblast.ui import print_banner, print_error
-
-
-from rich.prompt import Prompt
-
 
 def main():
     parser = argparse.ArgumentParser(
@@ -60,6 +54,11 @@ def main():
     )
 
     args = parser.parse_args()
+
+    # Deferred imports to speed up CLI initialization (especially for --help/--version)
+    from driveblast.core import download
+    from driveblast.ui import print_banner, print_error
+    from rich.prompt import Prompt
 
     if not args.quiet:
         print_banner()
