@@ -1,0 +1,3 @@
+## 2024-06-25 - Defer heavy imports in CLI to reduce boot time latency
+**Learning:** Python CLIs using libraries like `requests`, `bs4`, and `rich` can experience significant boot latency (e.g., ~0.6 seconds) because all of these modules and their submodules are initialized synchronously upon execution. This punishes basic commands like `--help` or `--version` that shouldn't require these heavy modules.
+**Action:** Always place heavy dependencies that aren't strictly required for CLI argument parsing inside the execution function or right before use, instead of at the top of the file. This allows commands like `driveblast --help` to run instantly.
