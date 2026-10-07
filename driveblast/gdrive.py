@@ -2,7 +2,7 @@ import re
 import urllib.parse
 from typing import Optional, Tuple
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 
 class GoogleDriveError(Exception):
@@ -135,9 +135,8 @@ def resolve_gdrive_download_stream(
 
     # Step 2: If we received HTML, it might be the virus scan warning confirmation page
     html_content = resp.text
-    soup = BeautifulSoup(html_content, "html.parser")
 
-    # Check for known permission error banners
+    # Check for known permission error banners first to fast-fail before parsing
     if "Google Drive - Access Denied" in html_content or "Permission denied" in html_content:
         raise GoogleDriveError(
             "Access Denied: The file is private or requires authorization.\n"
@@ -148,6 +147,10 @@ def resolve_gdrive_download_stream(
         raise GoogleDriveError(
             "Google Drive quota exceeded for this file. Try again later or use an authenticated account."
         )
+
+    # Use SoupStrainer to only parse forms and links, significantly speeding up BeautifulSoup
+    strainer = SoupStrainer(["form", "a"])
+    soup = BeautifulSoup(html_content, "html.parser", parse_only=strainer)
 
     # Look for the download confirmation form (<form id="download-form" ...>)
     download_form = soup.find("form", id="download-form")
