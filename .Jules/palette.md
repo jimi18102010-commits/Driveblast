@@ -1,0 +1,3 @@
+## 2024-10-08 - Asynchronous CLI Link Resolution Feedback
+**Learning:** During the implementation of the Google Drive link resolution (`resolve_gdrive_download_stream`), I discovered that CLI operations lacking immediate visual feedback, especially when chaining HTTP requests to bypass virus scans, caused users to perceive the application as hanging. Adding a Rich `console.status` spinner specifically for this pre-download phase, while keeping it toggleable via the `--quiet` flag, maintains the CLI's utility while significantly reducing perceived latency.
+**Action:** Use Rich `console.status` for all pre-download or pre-processing steps in the CLI that involve network I/O, ensuring they respect the global `quiet` flag state.
