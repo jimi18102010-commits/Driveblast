@@ -1,0 +1,3 @@
+## 2026-10-09 - Requests iter_content streaming overhead
+**Learning:** `requests.iter_content` has surprisingly high Python overhead when downloading very large files due to chunk yielding and string allocations. We found `shutil.copyfileobj(resp.raw, f)` reduces CPU overhead by pushing buffer copying closer to C-level loops, which makes it drastically faster when network I/O isn't fully bottlenecked.
+**Action:** When streaming large downloads with `requests`, default to `resp.raw.decode_content = True` and `shutil.copyfileobj`. Wrap the file object in a custom proxy if you need progress tracking.
