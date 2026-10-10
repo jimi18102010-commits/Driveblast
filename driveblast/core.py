@@ -93,9 +93,28 @@ def download(
             existing_size = os.path.getsize(target_path)
             # If we didn't send Range earlier because filename wasn't known, check if it's already complete
             if total_size and existing_size == total_size:
+                resp.close()  # Close the connection to avoid memory/socket leak
                 if not quiet:
                     print_success(f"File '{filename}' is already fully downloaded ({total_size / (1024 * 1024):.2f} MB).")
                 return os.path.abspath(target_path)
+            elif existing_size > 0 and total_size and existing_size < total_size:
+                # ⚡ PERFORMANCE OPTIMIZATION:
+                # If output path was a directory, we didn't know the file name until the first stream resolved.
+                # If we discover a massive partial file exists locally, instead of throwing it away
+                # and re-downloading from byte 0, we close the original stream and request the exact Range.
+                # Expected Impact: Saves gigabytes of bandwidth and hours of time by preventing redundant downloads.
+                resp.close()
+                if not quiet:
+                    print_info(f"Found partial file '{filename}' ({existing_size / (1024 * 1024):.2f} MB). Resuming...")
+
+                range_offset = existing_size
+                resp, _, total_size = resolve_gdrive_download_stream(
+                    file_id=file_id,
+                    session=session,
+                    range_offset=range_offset,
+                    doc_type=doc_type,
+                    export_format=export_format,
+                )
 
     filename = os.path.basename(target_path)
 

@@ -1,0 +1,3 @@
+## 2026-10-10 - Discovered missing state caching resulting in redundant downloads
+**Learning:** In CLI download tools, if the target filename isn't known until after the first stream connects (e.g. relying on `Content-Disposition`), the tool will initialize a connection from byte 0. If a large partial file is then discovered locally, proceeding with the stream overwrites it, destroying Gigabytes of data and missing the opportunity to resume.
+**Action:** When the filename is discovered dynamically, check for an existing partial file. If one exists, immediately close the 0-byte stream and issue a new request with the proper `Range` header, preventing redundant re-downloads.
