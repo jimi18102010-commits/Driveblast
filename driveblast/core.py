@@ -77,13 +77,23 @@ def download(
     if range_offset > 0 and not quiet:
         print_info(f"Found partial file ({existing_size / (1024 * 1024):.2f} MB). Requesting resume...")
 
-    resp, filename_from_header, total_size = resolve_gdrive_download_stream(
-        file_id=file_id,
-        session=session,
-        range_offset=range_offset,
-        doc_type=doc_type,
-        export_format=export_format,
-    )
+    if not quiet:
+        with console.status("[bold cyan]Resolving download stream...", spinner="dots"):
+            resp, filename_from_header, total_size = resolve_gdrive_download_stream(
+                file_id=file_id,
+                session=session,
+                range_offset=range_offset,
+                doc_type=doc_type,
+                export_format=export_format,
+            )
+    else:
+        resp, filename_from_header, total_size = resolve_gdrive_download_stream(
+            file_id=file_id,
+            session=session,
+            range_offset=range_offset,
+            doc_type=doc_type,
+            export_format=export_format,
+        )
 
     # Finalize target file path
     if not target_path:
@@ -95,6 +105,7 @@ def download(
             if total_size and existing_size == total_size:
                 if not quiet:
                     print_success(f"File '{filename}' is already fully downloaded ({total_size / (1024 * 1024):.2f} MB).")
+                resp.close()
                 return os.path.abspath(target_path)
 
     filename = os.path.basename(target_path)
@@ -110,10 +121,12 @@ def download(
         if range_offset > 0 and total_size and range_offset == total_size:
             if not quiet:
                 print_success(f"File '{filename}' is already fully downloaded.")
+            resp.close()
             return os.path.abspath(target_path)
         open_mode = "wb"
         completed_bytes = 0
     else:
+        resp.close()
         raise GoogleDriveError(f"HTTP Error {resp.status_code}: Unable to download file.")
 
     if not quiet:
