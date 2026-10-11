@@ -95,6 +95,7 @@ def download(
             if total_size and existing_size == total_size:
                 if not quiet:
                     print_success(f"File '{filename}' is already fully downloaded ({total_size / (1024 * 1024):.2f} MB).")
+                resp.close()
                 return os.path.abspath(target_path)
 
     filename = os.path.basename(target_path)
@@ -110,10 +111,12 @@ def download(
         if range_offset > 0 and total_size and range_offset == total_size:
             if not quiet:
                 print_success(f"File '{filename}' is already fully downloaded.")
+            resp.close()
             return os.path.abspath(target_path)
         open_mode = "wb"
         completed_bytes = 0
     else:
+        resp.close()
         raise GoogleDriveError(f"HTTP Error {resp.status_code}: Unable to download file.")
 
     if not quiet:
@@ -153,5 +156,7 @@ def download(
                 "Run the command again to resume."
             )
         sys.exit(130)
+    finally:
+        resp.close()
 
     return os.path.abspath(target_path)
