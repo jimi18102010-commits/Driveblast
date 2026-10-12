@@ -2,7 +2,7 @@ import re
 import urllib.parse
 from typing import Optional, Tuple
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 
 
 class GoogleDriveError(Exception):
@@ -109,6 +109,7 @@ def resolve_gdrive_download_stream(
     # Check for authentication / permission denial
     resp_url = getattr(resp, "url", "") or ""
     if resp.status_code in (401, 403) or "accounts.google.com" in resp_url:
+        resp.close()
         raise GoogleDriveError(
             "Access Denied (401/403): The document or file is private.\n"
             "To download, please open Google Drive/Docs -> 'Share' (Поделиться) -> "
@@ -116,6 +117,7 @@ def resolve_gdrive_download_stream(
         )
 
     if resp.status_code == 404:
+        resp.close()
         raise GoogleDriveError("File or document not found (404). Please verify the link or File ID.")
 
     # Check if we got the file immediately
@@ -135,7 +137,9 @@ def resolve_gdrive_download_stream(
 
     # Step 2: If we received HTML, it might be the virus scan warning confirmation page
     html_content = resp.text
-    soup = BeautifulSoup(html_content, "html.parser")
+    resp.close()
+    strainer = SoupStrainer(["form", "a"])
+    soup = BeautifulSoup(html_content, "html.parser", parse_only=strainer)
 
     # Check for known permission error banners
     if "Google Drive - Access Denied" in html_content or "Permission denied" in html_content:
