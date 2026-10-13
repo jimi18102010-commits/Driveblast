@@ -9,7 +9,7 @@ export function AboutSection() {
   const skills = [
     { category: 'Languages', items: ['C', 'C++', 'Rust', 'Python'] },
     { category: 'Low-Level', items: ['Linux Kernel', 'eBPF', 'XDP', 'Networking'] },
-    { category: 'Performance', items: ['ONNX Runtime', 'High-speed streaming', 'TCP/IP'] },
+    { category: 'Performance', items: ['OpenCV ONNX', 'High-speed streaming', 'TCP/IP'] },
     { category: 'Tools', items: ['Git', 'Vite', 'React', 'Tailwind'] },
   ];
 

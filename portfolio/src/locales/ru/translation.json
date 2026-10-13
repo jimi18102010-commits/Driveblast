@@ -27,34 +27,36 @@
     "title": "Проекты",
     "scapy": {
       "title": "Scapy (Upstream PR #5214)",
-      "desc": "Официальный принятый PR в главный репозиторий secdev/scapy (исправление парсера протокола EDNS0 и диссектора TLS SNI)."
+      "desc": "Открытый PR #5214 исправляет IndexError при разборе усечённого IPv6 routing header. Он ещё не слит."
     },
     "driveblast": {
       "title": "DriveBlast",
-      "desc": "Высокоскоростной стриминговый движок на Python и Rust с поддержкой chunked HTTP 206 для Google Drive (работает в 3.8 раза быстрее rclone и gdown)."
+      "desc": "Загрузчик Google Drive на Python с HTTP Range, экспортом документов и CLI."
     },
     "faceblast": {
       "title": "FaceBlast",
-      "desc": "C++ / ONNX Runtime пайплайн распознавания лиц для реального времени (инференс менее 15 мс на кадр, против 450 мс у dlib/PyTorch)."
+      "desc": "Обнаружение и сравнение лиц на Python через OpenCV YuNet и SFace ONNX."
     },
     "vortex": {
       "title": "VORTEX",
-      "desc": "Сетевой фильтр пакетов на уровне ядра Linux через eBPF/XDP с мгновенным сбросом трафика (Drop latency < 0.8 µs)."
+      "desc": "Экспериментальный TCP-прокси с TLS-телеметрией и опциональным IPv4 XDP blacklist; не production DDoS-защита."
     },
     "viewDetails": "Подробности",
     "metrics": "Метрики",
     "sourceCode": "Исходный код",
-    "architecture": "Архитектура"
+    "architecture": "Архитектура",
+    "limitations": "Независимо проверенный бенчмарк не опубликован. Примеры — фрагменты кода или использование API; реализация и ограничения доступны на GitHub."
   },
   "simulator": {
     "title": "eBPF/XDP Симулятор",
-    "desc": "Визуализация движения пакетов через сетевую карту, хук ядра и мгновенный XDP_DROP за <0.8 µs",
+    "desc": "Иллюстрация потока пакетов и возможного решения XDP в браузере.",
     "incoming": "Входящий пакет",
     "xdpHook": "XDP Хук",
     "kernel": "Ядро Linux",
     "dropped": "Сброшено (DROP)",
     "passed": "Пропущено (PASS)",
-    "latency": "Задержка: < 0.8 µs"
+    "latency": "Только иллюстрация",
+    "disclaimer": "Иллюстрация в браузере — не реальный трафик и не измерение производительности."
   },
   "terminal": {
     "title": "Терминал",

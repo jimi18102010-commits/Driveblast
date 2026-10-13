@@ -27,34 +27,36 @@
     "title": "Projekte",
     "scapy": {
       "title": "Scapy (Upstream PR #5214)",
-      "desc": "Offiziell akzeptierter PR in das Haupt-Repository secdev/scapy (Korrektur des EDNS0-Protokoll-Parsers und TLS-SNI-Dissectors)."
+      "desc": "Der offene PR #5214 behebt einen IndexError bei verkürzten IPv6-Routing-Headern. Er ist noch nicht gemergt."
     },
     "driveblast": {
       "title": "DriveBlast",
-      "desc": "Hochgeschwindigkeits-Streaming-Engine in Python und Rust mit Chunked-HTTP-206-Unterstützung für Google Drive (3,8-mal schneller als rclone und gdown)."
+      "desc": "Python-Downloader für Google Drive mit HTTP-Range-Fortsetzung, Dokumentexport und CLI."
     },
     "faceblast": {
       "title": "FaceBlast",
-      "desc": "C++ / ONNX Runtime Echtzeit-Gesichtserkennungs-Pipeline (Inferenz < 15 ms pro Frame, im Vergleich zu 450 ms bei dlib/PyTorch)."
+      "desc": "Gesichtserkennung und -vergleich in Python mit OpenCV YuNet und SFace ONNX."
     },
     "vortex": {
       "title": "VORTEX",
-      "desc": "Netzwerkpaketfilter auf Linux-Kernel-Ebene über eBPF/XDP mit sofortigem Traffic-Drop (Drop-Latenz < 0.8 µs)."
+      "desc": "Experimenteller TCP-Proxy mit TLS-Telemetrie und optionaler IPv4-XDP-Sperrliste; kein produktiver DDoS-Schutz."
     },
     "viewDetails": "Details",
     "metrics": "Metriken",
     "sourceCode": "Quellcode",
-    "architecture": "Architektur"
+    "architecture": "Architektur",
+    "limitations": "Kein unabhängig geprüfter Benchmark ist veröffentlicht. Beispiele zeigen Codeauszüge oder API-Nutzung; Implementierung und Grenzen stehen auf GitHub."
   },
   "simulator": {
     "title": "eBPF/XDP-Simulator",
-    "desc": "Visualisierung der Paketbewegung durch die NIC, den Kernel-Hook und den sofortigen XDP_DROP in <0.8 µs",
+    "desc": "Browserillustration des Paketflusses und einer möglichen XDP-Entscheidung.",
     "incoming": "Eingehendes Paket",
     "xdpHook": "XDP Hook",
     "kernel": "Linux Kernel",
     "dropped": "Verworfen (DROP)",
     "passed": "Bestanden (PASS)",
-    "latency": "Latenz: < 0.8 µs"
+    "latency": "Nur Illustration",
+    "disclaimer": "Illustrative Browseranimation — kein Live-Verkehr oder gemessener Benchmark."
   },
   "terminal": {
     "title": "Terminal",

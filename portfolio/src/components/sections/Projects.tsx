@@ -4,96 +4,62 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Activity, Cpu } from 'lucide-react';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import c from 'react-syntax-highlighter/dist/esm/languages/hljs/c';
-import cpp from 'react-syntax-highlighter/dist/esm/languages/hljs/cpp';
-import rust from 'react-syntax-highlighter/dist/esm/languages/hljs/rust';
 import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
 import vs2015 from 'react-syntax-highlighter/dist/esm/styles/hljs/vs2015';
 
 SyntaxHighlighter.registerLanguage('c', c);
-SyntaxHighlighter.registerLanguage('cpp', cpp);
-SyntaxHighlighter.registerLanguage('rust', rust);
 SyntaxHighlighter.registerLanguage('python', python);
 
 const projectsData = [
   {
-    id: 'scapy',
-    titleKey: 'projects.scapy.title',
-    descKey: 'projects.scapy.desc',
-    tech: ['Python', 'Networking', 'DNS', 'TLS'],
-    code: `// Scapy EDNS0 / TLS SNI Fix Snippet
-class EDNS0(Packet):
-    name = "EDNS0"
-    fields_desc = [
-        ByteField("opt_code", 0),
-        ShortField("opt_len", 0),
-        StrLenField("opt_data", "", length_from=lambda pkt: pkt.opt_len)
-    ]
-
-    def extract_padding(self, s):
-        return "", s`,
+    id: 'scapy', titleKey: 'projects.scapy.title', descKey: 'projects.scapy.desc',
+    tech: ['Python', 'IPv6', 'Packet Parsing'],
+    sourceUrl: 'https://github.com/secdev/scapy/pull/5214',
+    code: `# Excerpt from the open Scapy PR #5214.
+# Check payload length before indexing a truncated routing header.
+elif self.nh == 43 and len(p) > 2 and p[2] == 4:
+    return IPv6ExtHdrSegmentRouting`,
     language: 'python'
   },
   {
-    id: 'driveblast',
-    titleKey: 'projects.driveblast.title',
-    descKey: 'projects.driveblast.desc',
-    tech: ['Python', 'Rust', 'HTTP 206', 'Streaming'],
-    code: `// DriveBlast Chunked HTTP 206 Rust Core
-async fn fetch_chunk(url: &str, start: u64, end: u64) -> Result<Vec<u8>, Error> {
-    let client = reqwest::Client::new();
-    let res = client.get(url)
-        .header("Range", format!("bytes={}-{}", start, end))
-        .send()
-        .await?;
+    id: 'driveblast', titleKey: 'projects.driveblast.title', descKey: 'projects.driveblast.desc',
+    tech: ['Python', 'HTTP Range', 'Streaming'],
+    sourceUrl: 'https://github.com/jimi18102010-commits/Driveblast',
+    code: `# Public Python API usage; not a performance benchmark.
+from driveblast import download
 
-    let bytes = res.bytes().await?;
-    Ok(bytes.to_vec())
-}`,
-    language: 'rust'
+path = download(
+    "https://drive.google.com/file/d/YOUR_FILE_ID/view",
+    output="dataset.zip",
+    resume=True,
+)`,
+    language: 'python'
   },
   {
-    id: 'faceblast',
-    titleKey: 'projects.faceblast.title',
-    descKey: 'projects.faceblast.desc',
-    tech: ['C++', 'ONNX Runtime', 'Computer Vision'],
-    code: `// FaceBlast Inference Engine (C++)
-void FaceBlast::infer(const cv::Mat& frame) {
-    auto input_tensor = preprocess(frame);
-    std::vector<const char*> input_names = {"input"};
-    std::vector<const char*> output_names = {"output"};
+    id: 'faceblast', titleKey: 'projects.faceblast.title', descKey: 'projects.faceblast.desc',
+    tech: ['Python', 'OpenCV', 'ONNX Models'],
+    sourceUrl: 'https://github.com/jimi18102010-commits/faceblast',
+    code: `# OpenCV YuNet + SFace models via the public API.
+from faceblast import compare_faces
 
-    auto output_tensors = session.Run(
-        Ort::RunOptions{nullptr},
-        input_names.data(), &input_tensor, 1,
-        output_names.data(), 1
-    );
-
-    postprocess(output_tensors.front());
-}`,
-    language: 'cpp'
+result = compare_faces("photo1.jpg", "photo2.jpg")
+print(result.similarity, result.is_match)
+# Similarity is not calibrated identity probability.`,
+    language: 'python'
   },
   {
-    id: 'vortex',
-    titleKey: 'projects.vortex.title',
-    descKey: 'projects.vortex.desc',
-    tech: ['C', 'eBPF', 'XDP', 'Linux Kernel'],
-    code: `// VORTEX XDP Drop Hook (eBPF C)
-SEC("xdp_drop")
-int xdp_drop_prog(struct xdp_md *ctx) {
-    void *data = (void *)(long)ctx->data;
-    void *data_end = (void *)(long)ctx->data_end;
-
-    struct ethhdr *eth = data;
-    if (data + sizeof(*eth) > data_end)
-        return XDP_PASS;
-
-    if (eth->h_proto == bpf_htons(ETH_P_IP)) {
-        // Fast path drop for specific IP logic
-        return XDP_DROP; // Latency < 0.8 µs
-    }
-
-    return XDP_PASS;
-}`,
+    id: 'vortex', titleKey: 'projects.vortex.title', descKey: 'projects.vortex.desc',
+    tech: ['Python', 'C', 'IPv4 XDP', 'Linux'],
+    sourceUrl: 'https://github.com/jimi18102010-commits/vortex',
+    code: `/* Illustrative excerpt from the expiry-aware audit fix. */
+struct ban_record *ban = bpf_map_lookup_elem(&blocked_ips, &src_ip);
+if (ban && bpf_ktime_get_ns() >= ban->expires_ns) {
+    bpf_map_delete_elem(&blocked_ips, &src_ip);
+    ban = 0;
+}
+if (ban)
+    return XDP_DROP;
+/* This is not a throughput or latency benchmark. */`,
     language: 'c'
   }
 ];
@@ -176,47 +142,12 @@ export function ProjectsSection() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div>
                     <h4 className="text-sm font-mono text-white mb-4 uppercase tracking-widest flex items-center gap-2">
-                      <Cpu size={16} /> {t('projects.architecture')} & {t('projects.metrics')}
+                      <Cpu size={16} /> {t('projects.architecture')}
                     </h4>
-                    <div className="space-y-4 font-mono text-sm">
-                      {selectedProject.id === 'driveblast' && (
-                        <div className="glass-panel p-4 border-l-2 border-l-blue-500">
-                          <div className="text-gray-400 mb-1">Speed Comparison</div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-white">DriveBlast:</span>
-                            <div className="flex-1 h-2 bg-[#222] relative"><div className="absolute inset-y-0 left-0 bg-blue-500 w-full"></div></div>
-                            <span className="text-blue-400">100%</span>
-                          </div>
-                          <div className="flex items-center gap-4 mt-2">
-                            <span className="text-gray-400">Others:</span>
-                            <div className="flex-1 h-2 bg-[#222] relative"><div className="absolute inset-y-0 left-0 bg-gray-500 w-[26%]"></div></div>
-                            <span className="text-gray-500">26%</span>
-                          </div>
-                        </div>
-                      )}
-                      {selectedProject.id === 'faceblast' && (
-                        <div className="glass-panel p-4 border-l-2 border-l-purple-500">
-                          <div className="text-gray-400 mb-1">Inference Latency</div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-white">FaceBlast:</span>
-                            <span className="text-purple-400 font-bold">&lt; 15 ms</span>
-                          </div>
-                          <div className="flex items-center gap-4 mt-2">
-                            <span className="text-gray-400">dlib/PyTorch:</span>
-                            <span className="text-gray-500">450 ms</span>
-                          </div>
-                        </div>
-                      )}
-                      {selectedProject.id === 'vortex' && (
-                        <div className="glass-panel p-4 border-l-2 border-l-red-500">
-                          <div className="text-gray-400 mb-1">Drop Latency (eBPF)</div>
-                          <div className="flex items-center gap-4">
-                            <span className="text-white">VORTEX:</span>
-                            <span className="text-red-400 font-bold">&lt; 0.8 µs</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    <p className="text-gray-400 font-mono text-sm mb-4">{t('projects.limitations')}</p>
+                    <a href={selectedProject.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                      GitHub ↗
+                    </a>
                   </div>
 
                   <div>
