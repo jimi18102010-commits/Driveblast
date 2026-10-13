@@ -30,3 +30,17 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+## Audit validation and deployment notes
+
+Use Node.js 24 for the locked toolchain, run `npm ci --ignore-scripts`, `npm run lint`,
+and `npm run build`. The production output is `dist/`, which can be served as static
+files on Ubuntu or Debian; do not expose the development/preview server as production.
+
+The XDP animation and terminal are browser-only demonstrations, not a live server shell,
+real packet telemetry, or measured performance benchmarks. Project snippets link to their
+actual GitHub sources. The Scapy contribution is an open PR, not an accepted/merged one.
+
+These fixes target the existing portfolio feature branch. Merge this fix PR into that
+branch first, then review the original portfolio PR separately; do not merge the website
+into the downloader's main branch accidentally.
