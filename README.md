@@ -5,7 +5,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-jimi18102010--commits-181717?logo=github)](https://github.com/jimi18102010-commits/driveblast)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-15%2F15%20Passing-brightgreen.svg)]()
+[![Tests](https://github.com/jimi18102010-commits/Driveblast/actions/workflows/test.yml/badge.svg)](https://github.com/jimi18102010-commits/Driveblast/actions/workflows/test.yml)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)]()
 
 **High-speed Google Drive downloader with automatic virus-warning bypass, download resume, Google Docs/Sheets export, and interactive CLI.**
@@ -27,23 +27,16 @@
 
 ---
 
-## 🚀 Why DriveBlast instead of `gdown`?
+## Features and limits
 
-For years, developers and data scientists have relied on `gdown` to download large datasets and model weights in Google Colab, Kaggle, and remote servers. However, Google frequently changes its interstitial virus-warning page structure, causing `gdown` to fail with `Cannot retrieve the public link` or `Connection reset by peer`. Most painfully, **if a 30 GB download drops at 99%, `gdown` starts over from 0 MB**.
+- Public Google Drive file downloads and Google Docs/Sheets/Slides export.
+- Resume with HTTP Range when the remote server supports it, including automatically named files.
+- Filename validation and bounded HTTP timeouts; errors never silently count as completed files.
+- Interactive CLI with progress reporting.
 
-**DriveBlast solves this:**
-
-| Feature | `gdown` | **DriveBlast** ⚡ |
-| :--- | :---: | :---: |
-| **Download Resume (`Range` header)** | ❌ (starts from 0) | ✅ **Yes (resumes from exact byte)** |
-| **Bypass "Can't scan for viruses" warning** | ⚠️ Often breaks on changes | ✅ **Multi-fallback form & token parsing** |
-| **Google Docs / Sheets Export** | ⚠️ Limited / Crashes | ✅ **Built-in export to PDF, DOCX, XLSX** |
-| **Interactive Terminal Mode** | ❌ (requires flags) | ✅ **Run `driveblast` and paste link** |
-| **Modern Terminal UI** | Basic / Stale | ✅ **Rich vibrant progress bar & speed ETA** |
-| **Graceful `Ctrl+C` pausing** | ❌ Corrupts / Aborts | ✅ **Pauses cleanly & informs how to resume** |
-| **Python 3.12 - 3.14 compatible** | Deprecation warnings | ✅ **100% Tested & Verified** |
-
----
+Private files still require authorization. Download confirmation is not an antivirus check;
+scan downloaded files before opening them. Performance depends on Google and your network.
+Resuming a changed remote file is not guaranteed: use `--no-resume` when its contents changed.
 
 ## 📦 Installation
 
