@@ -27,34 +27,36 @@
     "title": "Loyihalar",
     "scapy": {
       "title": "Scapy (Upstream PR #5214)",
-      "desc": "Asosiy secdev/scapy omboriga rasmiy qabul qilingan PR (EDNS0 protokol parserini va TLS SNI dissektorini tuzatish)."
+      "desc": "Ochiq PR #5214 qisqa IPv6 routing headerini o‘qishdagi IndexError xatosini tuzatadi. Hali merge qilinmagan."
     },
     "driveblast": {
       "title": "DriveBlast",
-      "desc": "Google Drive uchun chunked HTTP 206 ni qo'llab-quvvatlaydigan Python va Rust-da yuqori tezlikdagi oqim dvigateli (rclone va gdown-ga qaraganda 3,8 baravar tezroq ishlaydi)."
+      "desc": "HTTP Range orqali resume, hujjat eksporti va CLI bilan Python Google Drive yuklagichi."
     },
     "faceblast": {
       "title": "FaceBlast",
-      "desc": "C++ / ONNX Runtime real vaqtda yuzni aniqlash quvuri (har bir kadr uchun inferens 15 ms dan kam, dlib/PyTorch uchun 450 ms ga qarshi)."
+      "desc": "OpenCV YuNet va SFace ONNX modellari orqali Python’da yuzlarni aniqlash va taqqoslash."
     },
     "vortex": {
       "title": "VORTEX",
-      "desc": "eBPF/XDP orqali Linux yadrosi darajasidagi tarmoq paketlari filtri darhol trafikni tushirish bilan (Drop kechikishi < 0.8 µs)."
+      "desc": "TLS telemetriyasi va ixtiyoriy IPv4 XDP blacklistli tajribaviy TCP proksi; production DDoS himoyasi emas."
     },
     "viewDetails": "Tafsilotlar",
     "metrics": "Metrikalar",
     "sourceCode": "Manba kodi",
-    "architecture": "Arxitektura"
+    "architecture": "Arxitektura",
+    "limitations": "Mustaqil tasdiqlangan performance benchmark e’lon qilinmagan. Misollar kod parchasi yoki API ishlatilishidir; haqiqiy imkoniyat va cheklovlar uchun GitHub manbasiga qarang."
   },
   "simulator": {
     "title": "eBPF/XDP Simulyatori",
-    "desc": "NIC orqali paketlar harakatini vizualizatsiya qilish, yadro kancasi va <0.8 µs da darhol XDP_DROP",
+    "desc": "Brauzerda paket oqimi va ehtimoliy XDP qarorini ko‘rsatuvchi namoyish.",
     "incoming": "Kiruvchi paket",
     "xdpHook": "XDP kancasi",
     "kernel": "Linux yadrosi",
     "dropped": "Tushib ketdi (DROP)",
     "passed": "O'tdi (PASS)",
-    "latency": "Kechikish: < 0.8 µs"
+    "latency": "Faqat namoyish",
+    "disclaimer": "Brauzerdagi namoyish animatsiyasi — jonli trafik yoki o‘lchangan benchmark emas."
   },
   "terminal": {
     "title": "Terminal",

@@ -27,34 +27,36 @@
     "title": "Projects",
     "scapy": {
       "title": "Scapy (Upstream PR #5214)",
-      "desc": "Official accepted PR into the main secdev/scapy repository (fixing EDNS0 protocol parser and TLS SNI dissector)."
+      "desc": "Open PR #5214 fixes an IndexError when parsing a truncated IPv6 routing header. It is not merged yet."
     },
     "driveblast": {
       "title": "DriveBlast",
-      "desc": "High-speed streaming engine in Python and Rust with chunked HTTP 206 support for Google Drive (3.8x faster than rclone and gdown)."
+      "desc": "Python Google Drive downloader with HTTP Range resume, document export and a CLI."
     },
     "faceblast": {
       "title": "FaceBlast",
-      "desc": "C++ / ONNX Runtime real-time face recognition pipeline (inference < 15ms per frame, vs 450ms for dlib/PyTorch)."
+      "desc": "Python face detection and comparison using OpenCV YuNet and SFace ONNX models."
     },
     "vortex": {
       "title": "VORTEX",
-      "desc": "Network packet filter at the Linux kernel level via eBPF/XDP with instant traffic drop (Drop latency < 0.8 µs)."
+      "desc": "Experimental TCP proxy with TLS telemetry and an optional IPv4 XDP blacklist; not production DDoS protection."
     },
     "viewDetails": "View Details",
     "metrics": "Metrics",
     "sourceCode": "Source Code",
-    "architecture": "Architecture"
+    "architecture": "Architecture",
+    "limitations": "No independently verified performance benchmark is published. Examples are excerpts or API usage; follow the GitHub source for implementation and limitations."
   },
   "simulator": {
     "title": "eBPF/XDP Simulator",
-    "desc": "Visualization of packet movement through the NIC, kernel hook, and instant XDP_DROP in <0.8 µs",
+    "desc": "Illustration of packet flow and a possible XDP decision in the browser.",
     "incoming": "Incoming Packet",
     "xdpHook": "XDP Hook",
     "kernel": "Linux Kernel",
     "dropped": "Dropped (DROP)",
     "passed": "Passed (PASS)",
-    "latency": "Latency: < 0.8 µs"
+    "latency": "Illustration only",
+    "disclaimer": "Illustrative browser animation — not live traffic or a performance measurement."
   },
   "terminal": {
     "title": "Terminal",

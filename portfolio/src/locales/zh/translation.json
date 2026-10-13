@@ -27,34 +27,36 @@
     "title": "项目",
     "scapy": {
       "title": "Scapy (Upstream PR #5214)",
-      "desc": "正式合并到主分支 secdev/scapy 的 PR (修复 EDNS0 协议解析器和 TLS SNI 剖析器)."
+      "desc": "尚未合并的 PR #5214 修复了截断 IPv6 路由报头解析时的 IndexError。"
     },
     "driveblast": {
       "title": "DriveBlast",
-      "desc": "使用 Python 和 Rust 编写的高速流媒体引擎，支持 Google Drive 的分块 HTTP 206 (比 rclone 和 gdown 快 3.8 倍)."
+      "desc": "支持 HTTP Range 续传、文档导出和 CLI 的 Python Google Drive 下载工具。"
     },
     "faceblast": {
       "title": "FaceBlast",
-      "desc": "C++ / ONNX Runtime 实时人脸识别管道 (每帧推理小于 15 毫秒，而 dlib/PyTorch 需要 450 毫秒)."
+      "desc": "通过 OpenCV YuNet 和 SFace ONNX 模型在 Python 中检测和比较人脸。"
     },
     "vortex": {
       "title": "VORTEX",
-      "desc": "通过 eBPF/XDP 在 Linux 内核层面实现的网络数据包过滤器，具有即时流量丢弃功能 (丢弃延迟 < 0.8 µs)."
+      "desc": "具有 TLS 遥测和可选 IPv4 XDP 黑名单的实验性 TCP 代理，并非生产级 DDoS 防护。"
     },
     "viewDetails": "查看详情",
     "metrics": "指标",
     "sourceCode": "源代码",
-    "architecture": "架构"
+    "architecture": "架构",
+    "limitations": "未发布独立验证的性能基准。示例仅为代码片段或 API 用法；实际实现及限制请查看 GitHub。"
   },
   "simulator": {
     "title": "eBPF/XDP 模拟器",
-    "desc": "可视化数据包通过 NIC，内核钩子和小于 0.8 微秒的即时 XDP_DROP 的运动",
+    "desc": "浏览器中的数据包流和可能的 XDP 决策演示。",
     "incoming": "传入数据包",
     "xdpHook": "XDP 钩子",
     "kernel": "Linux 内核",
     "dropped": "已丢弃 (DROP)",
     "passed": "已通过 (PASS)",
-    "latency": "延迟: < 0.8 µs"
+    "latency": "仅供演示",
+    "disclaimer": "浏览器演示动画，并非实时流量或实测性能。"
   },
   "terminal": {
     "title": "终端",

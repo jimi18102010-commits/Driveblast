@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // @ts-nocheck
 import { useTranslation } from 'react-i18next';
 import { Send } from 'lucide-react';
@@ -9,6 +9,7 @@ function GithubIcon(props: any) {
 
 export function ContactSection() {
   const { t } = useTranslation();
+  const [year] = useState(() => new Date().getFullYear());
 
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
@@ -29,7 +30,7 @@ export function ContactSection() {
           </a>
 
           <a
-            href="https://t.me/jimi_00"
+            href="https://t.me/jimmiy_dev"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-4 px-8 py-4 glass-panel hover:bg-[#0088cc] hover:text-white hover:border-[#0088cc] transition-all group w-full sm:w-auto justify-center"
@@ -41,7 +42,7 @@ export function ContactSection() {
       </div>
 
       <div className="absolute bottom-4 left-0 right-0 text-center text-xs font-mono text-gray-600">
-        &copy; {new Date().getFullYear()} Jimmiy. High-speed systems.
+        &copy; {year} Jimmiy. High-speed systems.
       </div>
     </section>
   );

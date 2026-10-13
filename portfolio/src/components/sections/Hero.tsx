@@ -2,21 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Terminal as TerminalIcon, Activity } from 'lucide-react';
-import { format } from 'date-fns';
+const tashkentClock = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Asia/Tashkent', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+});
 
 export function Hero() {
   const { t } = useTranslation();
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState(() => Date.now());
 
   useEffect(() => {
     const timer = setInterval(() => {
-      // Calculate Tashkent time (UTC+5)
-      const d = new Date();
-      const localTime = d.getTime();
-      const localOffset = d.getTimezoneOffset() * 60000;
-      const utc = localTime + localOffset;
-      const tashkent = utc + (3600000 * 5);
-      setTime(new Date(tashkent));
+      setTime(Date.now());
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -38,7 +34,7 @@ export function Hero() {
           <Activity size={14} className="text-green-500" />
           <span>{t('hero.systemStatus')}</span>
           <span className="mx-2">|</span>
-          <span>{t('hero.localTime')}: {format(time, 'HH:mm:ss')} (Tashkent)</span>
+          <span>{t('hero.localTime')}: {tashkentClock.format(time)} (Tashkent)</span>
         </motion.div>
 
         <motion.h1

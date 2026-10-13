@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Server, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { ShieldAlert, CheckCircle2 } from 'lucide-react';
 
 export function SimulatorSection() {
   const { t } = useTranslation();
@@ -26,6 +26,7 @@ export function SimulatorSection() {
         </h2>
         <p className="text-gray-400 font-mono text-sm mb-12 max-w-2xl">
           {t('simulator.desc')}
+          <span className="block mt-2">{t('simulator.disclaimer')}</span>
         </p>
 
         <div className="glass-panel p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0">

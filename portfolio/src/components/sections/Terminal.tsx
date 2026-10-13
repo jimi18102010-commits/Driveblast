@@ -1,18 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
 
 export function TerminalSection() {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
+  // A locale change deliberately starts a new terminal session without a state-setting effect.
+  return <TerminalSession key={i18n.resolvedLanguage ?? i18n.language} />;
+}
+
+function TerminalSession() {
+  const { t } = useTranslation();
   const [input, setInput] = useState('');
   const [output, setOutput] = useState<{ type: 'command' | 'output'; text: string }[]>([
     { type: 'output', text: t('terminal.welcome') }
   ]);
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setOutput([{ type: 'output', text: t('terminal.welcome') }]);
-  }, [i18n.language, t]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -41,7 +42,7 @@ export function TerminalSection() {
         response = `1. Scapy (Upstream PR #5214)\n2. DriveBlast\n3. FaceBlast\n4. VORTEX (eBPF)`;
         break;
       case 'skills':
-        response = `Languages: C, C++, Rust, Python\nSystems: Linux Kernel, eBPF / XDP\nAI/ML: ONNX Runtime\nNetworking: TCP/IP, HTTP 206\nTools: Git, Vite, React`;
+        response = `Languages: C, C++, Rust, Python\nSystems: Linux Kernel, eBPF / XDP\nAI/ML: OpenCV ONNX models\nNetworking: TCP/IP, HTTP 206\nTools: Git, Vite, React`;
         break;
       case 'neofetch':
         response = `
@@ -55,10 +56,10 @@ export function TerminalSection() {
 `;
         break;
       case 'stats':
-        response = `DriveBlast: 3.8x faster\nFaceBlast: 15ms inference (vs 450ms)\nVORTEX: Drop latency < 0.8 µs`;
+        response = `No verified performance benchmark is published.\nSee each project README for implementation, test coverage and limitations.`;
         break;
       case 'contact':
-        response = `GitHub: https://github.com/jimi18102010-commits\nTelegram: https://t.me/jimi_00`;
+        response = `GitHub: https://github.com/jimi18102010-commits\nTelegram: https://t.me/jimmiy_dev`;
         break;
       case 'clear':
         setOutput([]);
