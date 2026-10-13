@@ -70,6 +70,20 @@ def parse_content_disposition_filename(disposition: Optional[str]) -> Optional[s
     return None
 
 
+def _response_total_size(response: requests.Response, range_offset: int) -> Optional[int]:
+    try:
+        raw = response.headers.get("content-length")
+        if raw is None:
+            return None
+        length = int(raw)
+        if length < 0:
+            raise ValueError("negative length")
+        return length + range_offset if range_offset > 0 and response.status_code == 206 else length
+    except (TypeError, ValueError):
+        response.close()
+        raise GoogleDriveError("Invalid Content-Length received from Google.")
+
+
 def resolve_gdrive_download_stream(
     file_id: str,
     session: requests.Session,
@@ -87,7 +101,7 @@ def resolve_gdrive_download_stream(
     Returns:
         (response, filename, total_file_size)
     """
-    headers = {"User-Agent": DEFAULT_USER_AGENT}
+    headers = {"User-Agent": DEFAULT_USER_AGENT, "Accept-Encoding": "identity"}
     if range_offset > 0:
         headers["Range"] = f"bytes={range_offset}-"
 
@@ -104,11 +118,12 @@ def resolve_gdrive_download_stream(
     else:
         base_url = f"https://drive.usercontent.google.com/download?id={file_id}&export=download"
 
-    resp = session.get(base_url, headers=headers, stream=True, allow_redirects=True)
+    resp = session.get(base_url, headers=headers, stream=True, allow_redirects=True, timeout=(10, 60))
 
     # Check for authentication / permission denial
     resp_url = getattr(resp, "url", "") or ""
     if resp.status_code in (401, 403) or "accounts.google.com" in resp_url:
+        resp.close()
         raise GoogleDriveError(
             "Access Denied (401/403): The document or file is private.\n"
             "To download, please open Google Drive/Docs -> 'Share' (Поделиться) -> "
@@ -116,6 +131,7 @@ def resolve_gdrive_download_stream(
         )
 
     if resp.status_code == 404:
+        resp.close()
         raise GoogleDriveError("File or document not found (404). Please verify the link or File ID.")
 
     # Check if we got the file immediately
@@ -127,14 +143,14 @@ def resolve_gdrive_download_stream(
         if not filename and doc_type != "file":
             fmt = export_format or ("docx" if doc_type == "document" else "xlsx" if doc_type == "spreadsheet" else "pptx")
             filename = f"google_{doc_type}_{file_id[:8]}.{fmt}"
-        total_size = None
-        if "content-length" in resp.headers:
-            content_len = int(resp.headers["content-length"])
-            total_size = content_len + range_offset if range_offset > 0 and resp.status_code == 206 else content_len
+        total_size = _response_total_size(resp, range_offset)
         return resp, filename, total_size
 
     # Step 2: If we received HTML, it might be the virus scan warning confirmation page
-    html_content = resp.text
+    try:
+        html_content = resp.text
+    finally:
+        resp.close()
     soup = BeautifulSoup(html_content, "html.parser")
 
     # Check for known permission error banners
@@ -204,30 +220,45 @@ def resolve_gdrive_download_stream(
     if action_url.startswith("/"):
         action_url = urllib.parse.urljoin("https://drive.usercontent.google.com", action_url)
 
+    # Only submit confirmation forms back to Google, never an arbitrary host.
+    parsed_action = urllib.parse.urlparse(action_url)
+    if parsed_action.scheme != "https" or parsed_action.hostname not in {
+        "drive.google.com", "drive.usercontent.google.com", "docs.google.com"
+    } or parsed_action.username or parsed_action.password:
+        raise GoogleDriveError("Untrusted download confirmation URL.")
+
+    # Respect the form's method; Google confirmation forms may use GET.
     # Step 3: Request the confirmed download stream
-    if form_params:
+    if form_params and download_form and download_form.get("method", "get").lower() == "post":
         # Submit the form parameters
         confirmed_resp = session.post(
             action_url,
             data=form_params,
             headers=headers,
             stream=True,
-            allow_redirects=True
+            allow_redirects=True,
+            timeout=(10, 60),
         )
     else:
         confirmed_resp = session.get(
             action_url,
+            params=form_params or None,
             headers=headers,
             stream=True,
-            allow_redirects=True
+            allow_redirects=True,
+            timeout=(10, 60),
         )
 
+    # Do not save an error or another HTML warning as a successful binary file.
+    if confirmed_resp.status_code not in (200, 206, 416):
+        confirmed_resp.close()
+        raise GoogleDriveError(f"Download confirmation failed (HTTP {confirmed_resp.status_code}).")
+    if "text/html" in confirmed_resp.headers.get("content-type", "") and "attachment" not in confirmed_resp.headers.get("content-disposition", ""):
+        confirmed_resp.close()
+        raise GoogleDriveError("Google returned an HTML warning instead of a downloadable file.")
     # Validate final response
     final_disp = confirmed_resp.headers.get("content-disposition", "")
     filename = parse_content_disposition_filename(final_disp)
-    total_size = None
-    if "content-length" in confirmed_resp.headers:
-        content_len = int(confirmed_resp.headers["content-length"])
-        total_size = content_len + range_offset if range_offset > 0 and confirmed_resp.status_code == 206 else content_len
+    total_size = _response_total_size(confirmed_resp, range_offset)
 
     return confirmed_resp, filename, total_size
