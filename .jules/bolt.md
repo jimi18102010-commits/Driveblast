@@ -1,0 +1,3 @@
+## 2025-03-01 - Optimize HTML Parsing in Google Drive Downloader
+**Learning:** When resolving Google Drive download streams that return HTML (like the virus scan warning page), loading the entire large DOM into memory with BeautifulSoup can be a significant bottleneck. Using `bs4.SoupStrainer` to only parse the specific tags needed (like `form`, `a`, and `input`) drastically improves parsing performance and lowers memory usage.
+**Action:** Always use `bs4.SoupStrainer` with `BeautifulSoup` when parsing large HTML responses to restrict parsing to only the tags necessary for extracting the required data.
