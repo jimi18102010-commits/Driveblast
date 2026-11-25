@@ -155,7 +155,7 @@ pytest
 
 ## 👤 Author
 
-Developed by **[jimmiy](https://github.com/jimi18102010-commits)**.
+Developed by **[Jimmy](https://github.com/jimi18102010-commits)**.
 
 ## 📄 License
 
