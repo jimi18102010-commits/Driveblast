@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [
-    { name = "jimmiy", email = "jimi18102010@gmail.com" }
+    { name = "Jimmy", email = "jimi18102010@gmail.com" }
 ]
 urls = { "Homepage" = "https://github.com/jimi18102010-commits/driveblast", "Bug Tracker" = "https://github.com/jimi18102010-commits/driveblast/issues" }
 keywords = ["google-drive", "downloader", "gdown", "resume-download", "cli"]
